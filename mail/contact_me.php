@@ -21,6 +21,31 @@ $email_subject = "Website Contact Form:  $name";
 $email_body = "You have received a new message from your website contact form.\n\n"."Here are the details:\n\nName: $name\n\nEmail: $email_address\n\nPhone: $phone\n\nMessage:\n$message";
 $headers = "From: noreply@yourdomain.com\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
 $headers .= "Reply-To: $email_address";	
-mail($to,$email_subject,$email_body,$headers);
-return true;			
+// mail($to,$email_subject,$email_body,$headers);
+// return true;
+
+
+
+
+require_once '../vendor/autoload.php';
+
+// Create the Transport
+$transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+  ->setUsername('ybeck115@gmail.com')
+  ->setPassword('');
+
+// Create the Mailer using your created Transport
+$mailer = new Swift_Mailer($transport);
+
+// Create a message
+$send_message = (new Swift_Message('You have received a new message from your website'))
+  ->setFrom([$email_address => $name])
+  ->setTo(['ybeck115@gmail.com'])
+  ->setBody($email_body)
+  ;
+$send_headers = $send_message->getHeaders();
+$send_headers->addTextHeader($headers);
+
+// Send the message
+$result = $mailer->send($send_message);
 ?>

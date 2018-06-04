@@ -1,0 +1,6 @@
+{
+    "name": "user/my_portfolio",
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}
